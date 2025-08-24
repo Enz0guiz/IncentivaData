@@ -1,0 +1,103 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - Incentiva Data</title>
+  <link rel="stylesheet" href="../../assets/css/main.css">
+</head>
+<body>
+  <!-- HEADER -->
+  <header class="app-header">
+    <div class="app-logo">
+      <img src="../../assets/images/logo.png" alt="Logo Incentiva Data">
+    </div>
+    <nav class="navigation-menu">
+      <a href="dashboard.html" class="nav-link nav-link--active">Dashboard</a>
+      <a href="painel.html" class="nav-link">Painel</a>
+      <a href="solicitacoes.html" class="nav-link">Solicitações</a>
+      <a href="editar-perfil.html" class="nav-link">Perfil</a>
+      <a href="sobre.html" class="nav-link">Sobre</a>
+      <a href="../../index.html" class="nav-link">Sair</a>
+      <button id="toggleTheme" class="theme-toggle">🌙</button>
+    </nav>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main class="page-container">
+    <h1 class="page-title">Dashboard</h1>
+    <p class="page-subtitle">Visão geral da sua atividade na plataforma</p>
+
+    <!-- STATS GRID -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon">💰</div>
+        <div class="stat-info">
+          <div class="stat-number">R$ 25.000</div>
+          <div class="stat-label">Total Doado</div>
+        </div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-icon">🎯</div>
+        <div class="stat-info">
+          <div class="stat-number">12</div>
+          <div class="stat-label">Projetos Apoiados</div>
+        </div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-icon">🏢</div>
+        <div class="stat-info">
+          <div class="stat-number">8</div>
+          <div class="stat-label">OSCs Parceiras</div>
+        </div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-icon">📈</div>
+        <div class="stat-info">
+          <div class="stat-number">2.3K</div>
+          <div class="stat-label">Beneficiários</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RECENT ACTIVITY -->
+    <section class="activity-section">
+      <h2 class="section-title">Atividade Recente</h2>
+      <div class="activity-list">
+        <div class="activity-item">
+          <div class="activity-icon">✅</div>
+          <div class="activity-content">
+            <h4>Doação Processada</h4>
+            <p>R$ 5.000 para Instituto Educação Digital - Projeto Inclusão Tech</p>
+            <span class="activity-time">Há 2 horas</span>
+          </div>
+        </div>
+        
+        <div class="activity-item">
+          <div class="activity-icon">📋</div>
+          <div class="activity-content">
+            <h4>Relatório Gerado</h4>
+            <p>Relatório trimestral de impacto social disponível</p>
+            <span class="activity-time">Há 1 dia</span>
+          </div>
+        </div>
+        
+        <div class="activity-item">
+          <div class="activity-icon">🤝</div>
+          <div class="activity-content">
+            <h4>Nova Parceria</h4>
+            <p>Conectado com ONG Verde Futuro - Match 95%</p>
+            <span class="activity-time">Há 3 dias</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="../../assets/js/main.js"></script>
+</body>
+</html>

@@ -113,3 +113,85 @@ Resumo rápido
 - Time core: Giovanni (Economia), Enzo (Matemática), Giovanna (Economia), Maria Eduarda (Administração), Taísa (Finanças)
 
 
+# Incentiva Data - MVP
+
+## 📁 Estrutura do Projeto
+
+```
+incentiva-data/
+├── assets/                     # Recursos estáticos
+│   ├── css/
+│   │   └── main.css           # Estilos principais
+│   ├── js/
+│   │   └── main.js            # Scripts principais
+│   └── images/                # Imagens e logos
+│       ├── enzo.jpg
+│       ├── giovanna.jpg
+│       ├── giovanni.jpg
+│       ├── duda.jpg
+│       └── taisa.jpg
+├── src/                       # Código fonte
+│   ├── pages/                 # Páginas da aplicação
+│   │   ├── dashboard.html     # Dashboard principal
+│   │   ├── painel.html        # Painel de controle
+│   │   ├── solicitacoes.html  # Gestão de solicitações
+│   │   ├── editar-perfil.html # Edição de perfil
+│   │   └── sobre.html         # Página sobre
+│   └── components/            # Componentes reutilizáveis (futuro)
+├── docs/                      # Documentação
+├── index.html                 # Página inicial (landing page)
+├── .replit                    # Configuração do Replit
+└── README.md                  # Este arquivo
+```
+
+## 🚀 Como Executar
+
+1. **Desenvolvimento Local**
+   - Clique no botão "Run" no Replit
+   - Ou execute: `python3 -m http.server 5000`
+   - Acesse: `https://[seu-repl].replit.dev`
+
+2. **Navegação**
+   - **/** - Landing page com informações da plataforma
+   - **/src/pages/dashboard.html** - Dashboard do usuário
+   - **/src/pages/sobre.html** - Informações da equipe
+
+## 🎯 Funcionalidades MVP
+
+### ✅ Implementado
+- Landing page responsiva
+- Sistema de autenticação (mock)
+- Dashboard básico
+- Página sobre com informações da equipe
+- Tema claro/escuro
+- Design responsivo
+
+### 🔄 Em Desenvolvimento
+- Sistema de doações
+- Gestão de perfis
+- Relatórios de impacto
+- API backend
+
+### 📋 Próximos Passos
+- Integração com gateway de pagamento
+- Sistema de matching OSC/Empresa
+- Dashboards de impacto
+- Comprovantes automáticos
+
+## 🛠️ Tecnologias
+
+- **Frontend**: HTML5, CSS3, JavaScript vanilla
+- **Servidor**: Python HTTP server (desenvolvimento)
+- **Deploy**: Replit (desenvolvimento/teste)
+
+## 📱 Preview
+
+Acesse o preview em: `https://[seu-repl].replit.dev`
+
+## 👥 Equipe
+
+- **Enzo Rocha** - Founder & CTO
+- **Giovanna Janino** - Founder & Relação com OSC's  
+- **Giovanni** - Co-founder Relações Públicas
+- **Duda** - Designer & UX
+- **Taisa** - Marketing & Comunicação

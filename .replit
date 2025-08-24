@@ -4,7 +4,6 @@ modules = ["web"]
 channel = "stable-25_05"
 
 [workflows]
-runButton = "Servidor Local"
 
 [[workflows.workflow]]
 name = "Servidor Local"
@@ -13,4 +12,4 @@ mode = "sequential"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "python -m http.server 5000 --directory pages"
+args = "python3 -m http.server 5000 --bind 0.0.0.0"

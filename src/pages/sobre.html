@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nome do Seu Projeto</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div id="branding">
+                <h1><span class="highlight">Nome do Seu Projeto</span></h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Início</a></li>
+                    <li><a href="#about">Sobre</a></li>
+                    <li><a href="#services">Serviços</a></li>
+                    <li><a href="#contact">Contato</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section id="showcase">
+        <div class="container">
+            <h1>A Solução Definitiva para Suas Necessidades</h1>
+            <p>Transformamos ideias em realidade com tecnologia e inovação.</p>
+            <a href="#contact" class="button_1">Entre em Contato</a>
+        </div>
+    </section>
+
+    <section id="about">
+        <div class="container">
+            <h2>Sobre Nós</h2>
+            <p>Somos uma equipe apaixonada por tecnologia, dedicada a criar soluções inovadoras que fazem a diferença. Acreditamos no poder da colaboração e da criatividade para superar desafios e construir um futuro melhor.</p>
+            <div class="team-members">
+                <div class="team-member">
+                    <div class="member-photo">
+                        <img src="../../assets/images/enzo.jpg" alt="Enzo Rocha - Founder & CTO" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+                    </div>
+                    <h4 class="member-name">Enzo Rocha</h4>
+                    <p class="member-role">Founder & CTO</p>
+                    <p class="member-description">
+                        Engenheiro de Software com foco em arquitetura de sistemas e desenvolvimento backend. Entusiasta de código aberto e novas tecnologias.
+                    </p>
+                </div>
+
+                <div class="team-member">
+                    <div class="member-photo">
+                        <img src="../../assets/images/giovanna.jpg" alt="Giovanna - Founder & Relação com OSC's" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+                    </div>
+                    <h4 class="member-name">Giovanna Janino</h4>
+                    <p class="member-role">Founder & Relação com OSC's</p>
+                    <p class="member-description">
+                        Estudante de Econômia pela FEARP da USP, com experiência em gestão de projetos sociais e parcerias com organizações da sociedade civil.
+                    </p>
+                </div>
+
+                <div class="team-member">
+                    <div class="member-photo">
+                        <img src="../../assets/images/giovanni.jpg" alt="Giovanni - Co-founder & CEO" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+                    </div>
+                    <h4 class="member-name">Giovanni</h4>
+                    <p class="member-role">Co-founder Relações Públicas</p>
+                    <p class="member-description">
+                        Estudante de Econômia pela FEARP da USP, com experiência em liderança de equipes e desenvolvimento de negócios sociais.
+                    </p>
+                </div>
+
+                <div class="team-member">
+                    <div class="member-photo">
+                        <img src="../../assets/images/duda.jpg" alt="Duda" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+                    </div>
+                    <h4 class="member-name">Duda</h4>
+                    <p class="member-role">Designer & UX</p>
+                    <p class="member-description">
+                        Responsável pela experiência do usuário e design da plataforma, focando em usabilidade e acessibilidade.
+                    </p>
+                </div>
+
+                <div class="team-member">
+                    <div class="member-photo">
+                        <img src="../../assets/images/taisa.jpg" alt="Taisa" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+                    </div>
+                    <h4 class="member-name">Taisa</h4>
+                    <p class="member-role">Marketing & Comunicação</p>
+                    <p class="member-description">
+                        Especialista em marketing digital e comunicação, responsável pela estratégia de divulgação da plataforma.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="services">
+        <div class="container">
+            <h2>Nossos Serviços</h2>
+            <div class="service-item">
+                <h3>Desenvolvimento Web</h3>
+                <p>Criamos websites e aplicações web modernas, responsivas e escaláveis.</p>
+            </div>
+            <div class="service-item">
+                <h3>Design UX/UI</h3>
+                <p>Desenvolvemos interfaces intuitivas e experiências de usuário memoráveis.</p>
+            </div>
+            <div class="service-item">
+                <h3>Consultoria Tecnológica</h3>
+                <p>Oferecemos orientação especializada para otimizar seus processos e infraestrutura tecnológica.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <div class="container">
+            <h2>Entre em Contato</h2>
+            <form action="#">
+                <div class="form-group">
+                    <label for="name">Nome:</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="message">Mensagem:</label>
+                    <textarea id="message" name="message" rows="6" required></textarea>
+                </div>
+                <button type="submit" class="button_1">Enviar Mensagem</button>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 Nome do Seu Projeto. Todos os direitos reservados.</p>
+            <div class="social-media">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

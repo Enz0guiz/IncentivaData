@@ -23,6 +23,7 @@
       justify-content: space-between;
       align-items: center;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      
       position: sticky;
       top: 0;
       z-index: 100;
@@ -855,3 +856,220 @@
 </body>
 </html>
 
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Incentiva Data - Conectando Empresas e OSCs</title>
+  <link rel="stylesheet" href="assets/css/main.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- HEADER -->
+  <header class="app-header">
+    <div class="app-logo">
+      <img src="assets/images/logo.png" alt="Logo Incentiva Data">
+      <h1>Incentiva Data</h1>
+    </div>
+    <nav class="auth-menu">
+      <button class="nav-link" onclick="openModal('loginModal')">Entrar</button>
+      <button class="btn-primary" onclick="openModal('registerModal')">Cadastrar</button>
+      <button id="toggleTheme" class="theme-toggle">🌙</button>
+    </nav>
+  </header>
+
+  <!-- HERO SECTION -->
+  <section class="hero-section">
+    <div class="hero-content">
+      <h1 class="hero-title">Conectando Empresas e OSCs</h1>
+      <p class="hero-subtitle">
+        Transforme seu investimento social em impacto real através da nossa plataforma 
+        que conecta empresas com organizações da sociedade civil de forma inteligente e transparente.
+      </p>
+      <div class="hero-buttons">
+        <button class="btn-primary" onclick="openModal('registerModal')">Começar Agora</button>
+        <button class="btn-secondary" onclick="scrollToSection('about')">Saiba Mais</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+    <!-- SOLUTIONS SECTION -->
+    <section class="solutions-section" id="solutions">
+      <div class="section-header">
+        <h2 class="section-title">Nossas Soluções</h2>
+        <p class="section-subtitle">Facilitamos conexões estratégicas entre empresas e ONGs</p>
+      </div>
+      
+      <div class="solutions-grid">
+        <div class="solution-card">
+          <div class="solution-icon">🤝</div>
+          <h3 class="solution-title">Conexões Inteligentes</h3>
+          <p class="solution-description">
+            Algoritmo que conecta empresas com OSCs baseado em valores, objetivos e áreas de atuação compatíveis.
+          </p>
+        </div>
+
+        <div class="solution-card">
+          <div class="solution-icon">📊</div>
+          <h3 class="solution-title">Relatórios de Impacto</h3>
+          <p class="solution-description">
+            Dashboards completos para acompanhar o impacto real dos investimentos sociais em tempo real.
+          </p>
+        </div>
+
+        <div class="solution-card">
+          <div class="solution-icon">💰</div>
+          <h3 class="solution-title">Gestão de Doações</h3>
+          <p class="solution-description">
+            Plataforma segura para processar doações com split de pagamento e comprovantes automáticos.
+          </p>
+        </div>
+
+        <div class="solution-card">
+          <div class="solution-icon">🎯</div>
+          <h3 class="solution-title">Match Personalizado</h3>
+          <p class="solution-description">
+            Sistema que identifica as melhores oportunidades de parceria baseado no perfil da empresa.
+          </p>
+        </div>
+
+        <div class="solution-card">
+          <div class="solution-icon">📋</div>
+          <h3 class="solution-title">Compliance ESG</h3>
+          <p class="solution-description">
+            Ferramentas para documentar e reportar investimentos sociais conforme padrões ESG.
+          </p>
+        </div>
+
+        <div class="solution-card">
+          <div class="solution-icon">🔒</div>
+          <h3 class="solution-title">Transparência Total</h3>
+          <p class="solution-description">
+            Rastreabilidade completa dos recursos e resultados para garantir transparência nas doações.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- STATS SECTION -->
+    <section class="stats-section">
+      <div class="section-header">
+        <h2 class="section-title">Impacto em Números</h2>
+        <p class="section-subtitle">Resultados que transformam a sociedade</p>
+      </div>
+      
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-number">R$ 2.5M+</div>
+          <div class="stat-label">Valor Arrecadado</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">150+</div>
+          <div class="stat-label">OSCs Cadastradas</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">50+</div>
+          <div class="stat-label">Empresas Parceiras</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">10K+</div>
+          <div class="stat-label">Beneficiários Impactados</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT SECTION -->
+    <section class="about-section" id="about">
+      <div class="about-content">
+        <div class="about-text">
+          <h2 class="section-title">Sobre o Incentiva Data</h2>
+          <p class="about-description">
+            Somos uma plataforma inovadora que utiliza dados e tecnologia para 
+            revolucionar o investimento social no Brasil. Conectamos empresas 
+            comprometidas com responsabilidade social a organizações da sociedade 
+            civil de forma estratégica e mensurável.
+          </p>
+          
+          <div class="values-grid">
+            <div class="value-item">
+              <h4>🚀 Missão</h4>
+              <p>Democratizar o acesso aos incentivos fiscais e facilitar conexões estratégicas entre doadores e organizações.</p>
+            </div>
+            <div class="value-item">
+              <h4>👁️ Visão</h4>
+              <p>Ser a principal plataforma de investimento social do Brasil, transformando investimentos em mudanças reais na sociedade.</p>
+            </div>
+            <div class="value-item">
+              <h4>💎 Valores</h4>
+              <p>Transparência, inovação, compromisso social e sustentabilidade em todas as nossas ações e parcerias.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <p>© <strong>Incentiva Data</strong> · Conectando empresas a causas sociais</p>
+    <p>Transformando investimentos em impacto social sustentável</p>
+  </footer>
+
+  <!-- MODAL DE LOGIN -->
+  <div id="loginModal" class="modal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeModal('loginModal')">&times;</button>
+      <h2 class="modal-title">Entrar na Plataforma</h2>
+      <form id="loginForm">
+        <div class="form-group">
+          <label class="form-label">Email:</label>
+          <input type="email" class="form-input" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Senha:</label>
+          <input type="password" class="form-input" required>
+        </div>
+        <button type="submit" class="form-button">Entrar</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL DE CADASTRO -->
+  <div id="registerModal" class="modal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeModal('registerModal')">&times;</button>
+      <h2 class="modal-title">Cadastro na Plataforma</h2>
+      <form id="registerForm">
+        <div class="form-group">
+          <label class="form-label">Tipo de Usuário:</label>
+          <select class="form-input" required>
+            <option value="">Selecione...</option>
+            <option value="empresa">Empresa</option>
+            <option value="osc">Organização da Sociedade Civil</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Nome/Razão Social:</label>
+          <input type="text" class="form-input" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email:</label>
+          <input type="email" class="form-input" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Senha:</label>
+          <input type="password" class="form-input" required>
+        </div>
+        <button type="submit" class="form-button">Cadastrar</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
