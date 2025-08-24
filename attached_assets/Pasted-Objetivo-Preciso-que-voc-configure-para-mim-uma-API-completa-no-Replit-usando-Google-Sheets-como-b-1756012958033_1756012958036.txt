@@ -1,0 +1,166 @@
+Objetivo
+
+Preciso que você configure para mim uma API completa no Replit usando Google Sheets como banco de dados, conectando com meu frontend hospedado no GitHub Pages.
+Todos os arquivos devem ser criados e versionados para que eu possa posteriormente subir no GitHub.
+Meus formulários de cadastro de OSC, login e cadastro de doações precisam funcionar com essa API.
+
+Passos que você deve executar
+
+Configuração do projeto
+
+Criar um projeto Node.js no Replit.
+
+Instalar dependências:
+
+npm init -y
+npm install express body-parser googleapis dotenv cors
+
+
+Criar os arquivos:
+
+index.js (API principal)
+
+package.json (com start script)
+
+.env.example (com variáveis esperadas)
+
+README.md (instruções básicas de uso)
+
+Conexão com Google Sheets
+
+Criar projeto no Google Cloud e habilitar Google Sheets API.
+
+Criar Service Account e gerar chave JSON.
+
+Guardar no Replit Secrets como GOOGLE_SERVICE_ACCOUNT_KEY.
+
+Compartilhar minha planilha com o e-mail da Service Account.
+
+Substituir o <SHEET_ID> no código pela ID da minha planilha.
+
+Estrutura da planilha (já criada)
+
+Aba oscs: colunas → id, nome, cnpj, ods_tags, conta_bancaria, created_at
+
+Aba donations: colunas → id, company_name, osc_id, amount_cents, status, created_at
+
+Aba users: colunas → id, email, senha_hash, role, created_at (para login básico)
+
+Endpoints obrigatórios no index.js
+
+POST /auth/register → cria usuário na aba users.
+
+POST /auth/login → valida usuário (comparar senha simples ou hash).
+
+GET /oscs → lista OSCs.
+
+POST /oscs → cadastra nova OSC.
+
+GET /donations → lista doações.
+
+POST /donations → cria nova doação com status pending.
+
+POST /donations/pay → atualiza status de uma doação para paid.
+
+Middlewares extras
+
+Ativar CORS para que o frontend em GitHub Pages consiga chamar a API.
+
+Usar body-parser para JSON.
+
+Exemplo de código base (index.js)
+
+const express = require("express");
+const bodyParser = require("body-parser");
+const cors = require("cors");
+const { google } = require("googleapis");
+require("dotenv").config();
+
+const app = express();
+app.use(cors());
+app.use(bodyParser.json());
+
+const auth = new google.auth.GoogleAuth({
+  credentials: JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_KEY),
+  scopes: ["https://www.googleapis.com/auth/spreadsheets"],
+});
+const sheets = google.sheets({ version: "v4", auth });
+const SHEET_ID = "<SHEET_ID>";
+
+async function readRange(range) {
+  const res = await sheets.spreadsheets.values.get({ spreadsheetId: SHEET_ID, range });
+  return res.data.values || [];
+}
+async function appendRange(range, values) {
+  await sheets.spreadsheets.values.append({
+    spreadsheetId: SHEET_ID,
+    range,
+    valueInputOption: "RAW",
+    requestBody: { values },
+  });
+}
+
+// Cadastro/Login
+app.post("/auth/register", async (req, res) => {
+  const { id, email, senha, role } = req.body;
+  await appendRange("users!A:D", [[id, email, senha, role, new Date().toISOString()]]);
+  res.json({ ok: true });
+});
+app.post("/auth/login", async (req, res) => {
+  const { email, senha } = req.body;
+  const rows = await readRange("users!A2:E");
+  const user = rows.find(r => r[1] === email && r[2] === senha);
+  if (!user) return res.status(401).json({ error: "Credenciais inválidas" });
+  res.json({ id: user[0], email: user[1], role: user[3] });
+});
+
+// OSCs
+app.get("/oscs", async (req, res) => {
+  const data = await readRange("oscs!A2:F");
+  res.json(data);
+});
+app.post("/oscs", async (req, res) => {
+  const { id, nome, cnpj, ods_tags, conta_bancaria } = req.body;
+  await appendRange("oscs!A:F", [[id, nome, cnpj, ods_tags, conta_bancaria, new Date().toISOString()]]);
+  res.json({ ok: true });
+});
+
+// Doações
+app.get("/donations", async (req, res) => {
+  const data = await readRange("donations!A2:F");
+  res.json(data);
+});
+app.post("/donations", async (req, res) => {
+  const { id, company_name, osc_id, amount_cents } = req.body;
+  await appendRange("donations!A:F", [[id, company_name, osc_id, amount_cents, "pending", new Date().toISOString()]]);
+  res.json({ ok: true });
+});
+app.post("/donations/pay", async (req, res) => {
+  res.json({ message: "Atualizar status na planilha (implementar com batchUpdate)" });
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log("API running on port", PORT));
+
+
+Deploy final
+
+Rodar servidor no Replit.
+
+Expor a URL pública (ex.: https://meu-projeto.repl.co/).
+
+Garantir que o frontend no GitHub Pages consiga consumir com fetch().
+
+Versionamento
+
+Configurar integração GitHub no Replit.
+
+Subir todos os arquivos (index.js, package.json, .env.example, README.md) no repositório GitHub.
+
+Entregável esperado
+
+API rodando no Replit, conectada ao Google Sheets, com todos os endpoints funcionais.
+
+Repositório GitHub com os arquivos criados.
+
+URL pública da API para conectar com meu frontend.
