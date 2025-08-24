@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Perfil - Incentiva Data</title>
+  <style>
+    /* ===== RESET E BASE ===== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+      color: #1e293b;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    body.dark-theme {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      color: #f1f5f9;
+    }
+
+    /* ===== HEADER ===== */
+    .app-header {
+      background: linear-gradient(135deg, #1b72a0 0%, #0097b2 100%);
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    body.dark-theme .app-header {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      border-bottom: 1px solid #334155;
+    }
+
+    .app-logo {
+      display: flex;
+      align-items: center;
+    }
+
+    .app-logo img {
+      height: 45px;
+      width: auto;
+      border-radius: 8px;
+    }
+
+    .navigation-menu {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .nav-link {
+      padding: 0.7rem 1.2rem;
+      border-radius: 8px;
+      text-decoration: none;
+      color: white;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .nav-link:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: translateY(-1px);
+    }
+
+    .nav-link--active {
+      background: #49a376;
+      box-shadow: 0 4px 12px rgba(73, 163, 118, 0.3);
+    }
+
+    .theme-toggle {
+      background: transparent;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      color: white;
+      padding: 0.5rem;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 1.2rem;
+      transition: all 0.3s ease;
+      margin-left: 1rem;
+    }
+
+    .theme-toggle:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: scale(1.1);
+    }
+
+    /* ===== MAIN LAYOUT ===== */
+    .page-container {
+      padding: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .page-title {
+      font-size: 2.5rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+      color: #1b72a0;
+      text-align: center;
+    }
+
+    body.dark-theme .page-title {
+      color: #49a376;
+    }
+
+    .page-subtitle {
+      font-size: 1.1rem;
+      color: #64748b;
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    body.dark-theme .page-subtitle {
+      color: #cbd5e1;
+    }
+
+    /* ===== PROFILE LAYOUT ===== */
+    .profile-layout {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 3rem;
+      align-items: start;
+    }
+
+    /* ===== PROFILE CARD ===== */
+    .profile-card {
+      background: white;
+      border-radius: 20px;
+      padding: 2.5rem;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(27, 114, 160, 0.1);
+      text-align: center;
+    }
+
+    body.dark-theme .profile-card {
+      background: #1e293b;
+      border-color: #334155;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+
+    .profile-avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #1b72a0 0%, #0097b2 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      color: white;
+      margin: 0 auto 1.5rem;
+      box-shadow: 0 8px 25px rgba(27, 114, 160, 0.3);
+    }
+
+    body.dark-theme .profile-avatar {
+      background: linear-gradient(135deg, #49a376 0%, #1b72a0 100%);
+    }
+
+    .profile-name {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #1b72a0;
+      margin-bottom: 0.5rem;
+    }
+
+    body.dark-theme .profile-name {
+      color: #49a376;
+    }
+
+    .profile-type {
+      color: #64748b;
+      font-weight: 500;
+      margin-bottom: 1.5rem;
+    }
+
+    body.dark-theme .profile-type {
+      color: #cbd5e1;
+    }
+
+    .profile-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .stat-item {
+      background: #f8fafc;
+      border-radius: 12px;
+      padding: 1rem;
+      border: 1px solid rgba(27, 114, 160, 0.1);
+    }
+
+    body.dark-theme .stat-item {
+      background: #0f172a;
+      border-color: #334155;
+    }
+
+    .stat-number {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #1b72a0;
+    }
+
+    body.dark-theme .stat-number {
+      color: #49a376;
+    }
+
+    .stat-label {
+      font-size: 0.9rem;
+      color: #64748b;
+    }
+
+    body.dark-theme .stat-label {
+      color: #cbd5e1;
+    }
+
+    /* ===== FORM SECTION ===== */
+    .form-section {
+      background: white;
+      border-radius: 20px;
+      padding: 3rem;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(27, 114, 160, 0.1);
+    }
+
+    body.dark-theme .form-section {
+      background: #1e293b;
+      border-color: #334155;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+
+    .form-title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #1b72a0;
+      margin-bottom: 2rem;
+    }
+
+    body.dark-theme .form-title {
+      color: #49a376;
+    }
+
+    .form-tabs {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      border-bottom: 2px solid rgba(27, 114, 160, 0.1);
+    }
+
+    body.dark-theme .form-tabs {
+      border-bottom-color: #334155;
+    }
+
+    .tab-button {
+      background: none;
+      border: none;
+      padding: 1rem 1.5rem;
+      font-weight: 600;
+      color: #64748b;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border-bottom: 2px solid transparent;
+    }
+
+    body.dark-theme .tab-button {
+      color: #cbd5e1;
+    }
+
+    .tab-button.active {
+      color: #1b72a0;
+      border-bottom-color: #1b72a0;
+    }
+
+    body.dark-theme .tab-button.active {
+      color: #49a376;
+      border-bottom-color: #49a376;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group--full {
+      grid-column: 1 / -1;
+    }
+
+    .form-label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: #1b72a0;
+    }
+
+    body.dark-theme .form-label {
+      color: #49a376;
+    }
+
+    .form-input, .form-select, .form-textarea {
+      width: 100%;
+      padding: 0.8rem;
+      border: 2px solid rgba(27, 114, 160, 0.2);
+      border-radius: 8px;
+      background: white;
+      color: #1e293b;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      font-family: inherit;
+    }
+
+    body.dark-theme .form-input,
+    body.dark-theme .form-select,
+    body.dark-theme .form-textarea {
+      background: #0f172a;
+      border-color: #334155;
+      color: #f1f5f9;
+    }
+
+    .form-input:focus,
+    .form-select:focus,
+    .form-textarea:focus {
+      outline: none;
+      border-color: #1b72a0;
+      box-shadow: 0 0 0 3px rgba(27, 114, 160, 0.1);
+    }
+
+    .form-textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    .form-button {
+      background: linear-gradient(135deg, #49a376 0%, #cbac46 100%);
+      color: white;
+      padding: 1rem 2rem;
+      border: none;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 1rem;
+    }
+
+    .form-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(73, 163, 118, 0.3);
+    }
+
+    .form-button--secondary {
+      background: linear-gradient(135deg, #1b72a0 0%, #0097b2 100%);
+      margin-left: 1rem;
+    }
+
+    .form-button--secondary:hover {
+      box-shadow: 0 8px 25px rgba(27, 114, 160, 0.3);
+    }
+
+    /* ===== SUCCESS MESSAGE ===== */
+    .success-message {
+      background: linear-gradient(135deg, #49a376 0%, #cbac46 100%);
+      color: white;
+      border-radius: 12px;
+      padding: 1rem 1.5rem;
+      margin-top: 1rem;
+      display: none;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .success-message.show {
+      display: flex;
+      animation: fadeInUp 0.6s ease-out;
+    }
+
+    /* ===== FOOTER ===== */
+    .footer {
+      background: linear-gradient(135deg, #1b72a0 0%, #0097b2 100%);
+      color: white;
+      text-align: center;
+      padding: 2rem;
+      margin-top: 2rem;
+    }
+
+    body.dark-theme .footer {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      border-top: 1px solid #334155;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+      .app-header {
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1rem;
+      }
+
+      .navigation-menu {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .page-container {
+        padding: 1rem;
+      }
+
+      .page-title {
+        font-size: 2rem;
+      }
+
+      .profile-layout {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+
+      .profile-card {
+        padding: 2rem 1.5rem;
+      }
+
+      .form-section {
+        padding: 2rem 1.5rem;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .form-tabs {
+        flex-wrap: wrap;
+      }
+
+      .tab-button {
+        padding: 0.8rem 1rem;
+      }
+
+      .form-button--secondary {
+        margin-left: 0;
+        margin-top: 0.5rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .profile-card {
+        padding: 1.5rem 1rem;
+      }
+
+      .form-section {
+        padding: 1.5rem 1rem;
+      }
+
+      .profile-avatar {
+        width: 100px;
+        height: 100px;
+        font-size: 2.5rem;
+      }
+
+      .profile-stats {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ===== ANIMATIONS ===== */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .profile-card, .form-section {
+      animation: fadeInUp 0.6s ease-out;
+    }
+
+    .form-section {
+      animation-delay: 0.1s;
+    }
+  </style>
+</head>
+<body>
+  <!-- HEADER -->
+  <header class="app-header">
+    <div class="app-logo">
+      <img src="logo.png" alt="Logo Incentiva Data">
+    </div>
+    <nav class="navigation-menu">
+      <a href="dashboard.html" class="nav-link">Dashboard</a>
+      <a href="painel.html" class="nav-link">Painel</a>
+      <a href="solicitacoes.html" class="nav-link">Solicitações</a>
+      <a href="editar-perfil.html" class="nav-link nav-link--active">Perfil</a>
+      <a href="sobre.html" class="nav-link">Sobre</a>
+      <a href="index.html" class="nav-link">Sair</a>
+      <button id="toggleTheme" class="theme-toggle">🌙</button>
+    </nav>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main class="page-container">
+    <h1 class="page-title">Meu Perfil</h1>
+    <p class="page-subtitle">Gerencie suas informações pessoais e configurações da conta</p>
+
+    <div class="profile-layout">
+      <!-- CARD DO PERFIL -->
+      <section class="profile-card">
+        <div class="profile-avatar" id="profileAvatar">👤</div>
+        <h2 class="profile-name" id="profileName">Usuário</h2>
+        <p class="profile-type" id="profileType">Tipo de Usuário</p>
+        
+        <div class="profile-stats">
+          <div class="stat-item">
+            <div class="stat-number" id="statDonations">0</div>
+            <div class="stat-label">Doações</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number" id="statProjects">0</div>
+            <div class="stat-label">Projetos</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number" id="statImpact">R$ 0</div>
+            <div class="stat-label">Impacto Total</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number" id="statPartners">0</div>
+            <div class="stat-label">Parcerias</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- FORMULÁRIO DE EDIÇÃO -->
+      <section class="form-section">
+        <h2 class="form-title">Editar Informações</h2>
+        
+        <!-- TABS -->
+        <div class="form-tabs">
+          <button class="tab-button active" data-tab="personal">Dados Pessoais</button>
+          <button class="tab-button" data-tab="contact">Contato</button>
+          <button class="tab-button" data-tab="preferences">Preferências</button>
+        </div>
+
+        <!-- CONTEÚDO DAS TABS -->
+        <form id="profileForm">
+          <!-- TAB DADOS PESSOAIS -->
+          <div class="tab-content active" id="personal">
+            <div class="form-grid">
+              <div class="form-group">
+                <label class="form-label">Nome/Razão Social:</label>
+                <input type="text" class="form-input" id="fullName" required>
+              </div>
+              
+              <div class="form-group">
+                <label class="form-label">Tipo de Usuário:</label>
+                <select class="form-select" id="userType" disabled>
+                  <option value="empresa">🏢 Empresa</option>
+                  <option value="pessoa">👤 Pessoa Física</option>
+                  <option value="osc">🤝 OSC</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">CPF/CNPJ:</label>
+                <input type="text" class="form-input" id="document" placeholder="000.000.000-00">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Data de Nascimento/Fundação:</label>
+                <input type="date" class="form-input" id="birthDate">
+              </div>
+
+              <div class="form-group form-group--full">
+                <label class="form-label">Descrição/Bio:</label>
+                <textarea class="form-textarea" id="bio" placeholder="Conte um pouco sobre você ou sua organização..."></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB CONTATO -->
+          <div class="tab-content" id="contact">
+            <div class="form-grid">
+              <div class="form-group">
+                <label class="form-label">Email:</label>
+                <input type="email" class="form-input" id="email" required>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Telefone:</label>
+                <input type="tel" class="form-input" id="phone" placeholder="(11) 99999-9999">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Website:</label>
+                <input type="url" class="form-input" id="website" placeholder="https://exemplo.com">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">LinkedIn:</label>
+                <input type="url" class="form-input" id="linkedin" placeholder="https://linkedin.com/in/usuario">
+              </div>
+
+              <div class="form-group form-group--full">
+                <label class="form-label">Endereço:</label>
+                <textarea class="form-textarea" id="address" placeholder="Rua, número, bairro, cidade, estado, CEP"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB PREFERÊNCIAS -->
+          <div class="tab-content" id="preferences">
+            <div class="form-grid">
+              <div class="form-group">
+                <label class="form-label">Área de Interesse Principal:</label>
+                <select class="form-select" id="mainInterest">
+                  <option value="">Selecione uma área</option>
+                  <option value="educacao">📚 Educação</option>
+                  <option value="saude">🏥 Saúde</option>
+                  <option value="meio-ambiente">🌱 Meio Ambiente</option>
+                  <option value="cultura">🎭 Cultura e Arte</option>
+                  <option value="assistencia-social">🤝 Assistência Social</option>
+                  <option value="direitos-humanos">⚖️ Direitos Humanos</option>
+                  <option value="esporte">⚽ Esporte</option>
+                  <option value="tecnologia">💻 Tecnologia e Inovação</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Faixa de Investimento (R$):</label>
+                <select class="form-select" id="investmentRange">
+                  <option value="">Selecione uma faixa</option>
+                  <option value="ate-5k">Até R$ 5.000</option>
+                  <option value="5k-25k">R$ 5.000 - R$ 25.000</option>
+                  <option value="25k-100k">R$ 25.000 - R$ 100.000</option>
+                  <option value="100k-500k">R$ 100.000 - R$ 500.000</option>
+                  <option value="acima-500k">Acima de R$ 500.000</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Frequência de Doações:</label>
+                <select class="form-select" id="donationFrequency">
+                  <option value="">Selecione a frequência</option>
+                  <option value="mensal">Mensal</option>
+                  <option value="trimestral">Trimestral</option>
+                  <option value="semestral">Semestral</option>
+                  <option value="anual">Anual</option>
+                  <option value="esporadica">Esporádica</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Região de Atuação:</label>
+                <select class="form-select" id="region">
+                  <option value="">Selecione a região</option>
+                  <option value="local">Local (cidade)</option>
+                  <option value="estadual">Estadual</option>
+                  <option value="regional">Regional</option>
+                  <option value="nacional">Nacional</option>
+                  <option value="internacional">Internacional</option>
+                </select>
+              </div>
+
+              <div class="form-group form-group--full">
+                <label class="form-label">Objetivos e Metas:</label>
+                <textarea class="form-textarea" id="goals" placeholder="Descreva seus objetivos com investimentos sociais..."></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- BOTÕES DE AÇÃO -->
+          <div style="margin-top: 2rem;">
+            <button type="submit" class="form-button">💾 Salvar Alterações</button>
+            <button type="button" class="form-button form-button--secondary" onclick="resetForm()">🔄 Cancelar</button>
+          </div>
+
+          <!-- MENSAGEM DE SUCESSO -->
+          <div class="success-message" id="successMessage">
+            <span>✅</span>
+            <span>Perfil atualizado com sucesso!</span>
+          </div>
+        </form>
+      </section>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <p>© <strong>Incentiva Data</strong> · Conectando empresas a causas sociais</p>
+  </footer>
+
+  <script>
+    // Sistema de tema claro/escuro
+    const toggleTheme = document.getElementById('toggleTheme');
+    const body = document.body;
+
+    // Carregar preferência salva
+    if (localStorage.getItem('theme') === 'dark') {
+      body.classList.add('dark-theme');
+      toggleTheme.textContent = '☀️';
+    }
+
+    toggleTheme.addEventListener('click', () => {
+      body.classList.toggle('dark-theme');
+      
+      if (body.classList.contains('dark-theme')) {
+        toggleTheme.textContent = '☀️';
+        localStorage.setItem('theme', 'dark');
+      } else {
+        toggleTheme.textContent = '🌙';
+        localStorage.setItem('theme', 'light');
+      }
+    });
+
+    // Verificar se usuário está logado
+    if (!localStorage.getItem('isLoggedIn')) {
+      window.location.href = 'index.html';
+    }
+
+    // Sistema de tabs
+    const tabButtons = document.querySelectorAll('.tab-button');
+    const tabContents = document.querySelectorAll('.tab-content');
+
+    tabButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const targetTab = button.getAttribute('data-tab');
+        
+        // Remove active de todos os botões e conteúdos
+        tabButtons.forEach(btn => btn.classList.remove('active'));
+        tabContents.forEach(content => content.classList.remove('active'));
+        
+        // Adiciona active ao botão clicado e conteúdo correspondente
+        button.classList.add('active');
+        document.getElementById(targetTab).classList.add('active');
+      });
+    });
+
+    // Carregar dados do perfil
+    function loadProfileData() {
+      const userName = localStorage.getItem('userName') || 'Usuário';
+      const userEmail = localStorage.getItem('userEmail') || '';
+      const userType = localStorage.getItem('userType') || 'empresa';
+      
+      // Atualizar card do perfil
+      document.getElementById('profileName').textContent = userName;
+      document.getElementById('profileType').textContent = getTypeLabel(userType);
+      
+      // Definir avatar baseado no tipo
+      const avatarEmojis = {
+        'empresa': '🏢',
+        'pessoa': '👤',
+        'osc': '🤝'
+      };
+      document.getElementById('profileAvatar').textContent = avatarEmojis[userType] || '👤';
+      
+      // Carregar dados salvos do perfil
+      const profileData = JSON.parse(localStorage.getItem('profileData') || '{}');
+      
+      // Preencher formulário
+      document.getElementById('fullName').value = profileData.fullName || userName;
+      document.getElementById('userType').value = userType;
+      document.getElementById('email').value = profileData.email || userEmail;
+      document.getElementById('document').value = profileData.document || '';
+      document.getElementById('birthDate').value = profileData.birthDate || '';
+      document.getElementById('bio').value = profileData.bio || '';
+      document.getElementById('phone').value = profileData.phone || '';
+      document.getElementById('website').value = profileData.website || '';
+      document.getElementById('linkedin').value = profileData.linkedin || '';
+      document.getElementById('address').value = profileData.address || '';
+      document.getElementById('mainInterest').value = profileData.mainInterest || '';
+      document.getElementById('investmentRange').value = profileData.investmentRange || '';
+      document.getElementById('donationFrequency').value = profileData.donationFrequency || '';
+      document.getElementById('region').value = profileData.region || '';
+      document.getElementById('goals').value = profileData.goals || '';
+      
+      // Atualizar estatísticas (simuladas)
+      updateStats(userType);
+    }
+
+    function getTypeLabel(type) {
+      const labels = {
+        'empresa': '🏢 Empresa',
+        'pessoa': '👤 Pessoa Física',
+        'osc': '🤝 Organização da Sociedade Civil'
+      };
+      return labels[type] || 'Usuário';
+    }
+
+    function updateStats(userType) {
+      // Estatísticas simuladas baseadas no tipo de usuário
+      if (userType === 'osc') {
+        document.getElementById('statDonations').textContent = '23';
+        document.getElementById('statProjects').textContent = '8';
+        document.getElementById('statImpact').textContent = 'R$ 145K';
+        document.getElementById('statPartners').textContent = '12';
+        
+        // Ajustar labels para OSC
+        document.querySelector('#statDonations').nextElementSibling.textContent = 'Recebidas';
+        document.querySelector('#statProjects').nextElementSibling.textContent = 'Projetos';
+        document.querySelector('#statImpact').nextElementSibling.textContent = 'Arrecadado';
+        document.querySelector('#statPartners').nextElementSibling.textContent = 'Doadores';
+      } else {
+        document.getElementById('statDonations').textContent = '15';
+        document.getElementById('statProjects').textContent = '5';
+        document.getElementById('statImpact').textContent = 'R$ 87K';
+        document.getElementById('statPartners').textContent = '8';
+        
+        // Labels padrão para empresa/pessoa
+        document.querySelector('#statDonations').nextElementSibling.textContent = 'Doações';
+        document.querySelector('#statProjects').nextElementSibling.textContent = 'Projetos';
+        document.querySelector('#statImpact').nextElementSibling.textContent = 'Investido';
+        document.querySelector('#statPartners').nextElementSibling.textContent = 'OSCs';
+      }
+    }
+
+    // Formatação do telefone
+    const phoneInput = document.getElementById('phone');
+    phoneInput.addEventListener('input', (e) => {
+      let value = e.target.value.replace(/\D/g, '');
+      if (value.length >= 11) {
+        value = value.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+      } else if (value.length >= 7) {
+        value = value.replace(/(\d{2})(\d{4})(\d{0,4})/, '($1) $2-$3');
+      } else if (value.length >= 3) {
+        value = value.replace(/(\d{2})(\d{0,5})/, '($1) $2');
+      }
+      e.target.value = value;
+    });
+
+    // Formatação do documento
+    const documentInput = document.getElementById('document');
+    documentInput.addEventListener('input', (e) => {
+      let value = e.target.value.replace(/\D/g, '');
+      
+      if (value.length <= 11) {
+        // CPF
+        value = value.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+      } else {
+        // CNPJ
+        value = value.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, '$1.$2.$3/$4-$5');
+      }
+      
+      e.target.value = value;
+    });
+
+    // Manipulação do formulário
+    document.getElementById('profileForm').addEventListener('submit', (event) => {
+      event.preventDefault();
+      
+      // Coletar dados do formulário
+      const profileData = {
+        fullName: document.getElementById('fullName').value,
+        email: document.getElementById('email').value,
+        document: document.getElementById('document').value,
+        birthDate: document.getElementById('birthDate').value,
+        bio: document.getElementById('bio').value,
+        phone: document.getElementById('phone').value,
+        website: document.getElementById('website').value,
+        linkedin: document.getElementById('linkedin').value,
+        address: document.getElementById('address').value,
+        mainInterest: document.getElementById('mainInterest').value,
+        investmentRange: document.getElementById('investmentRange').value,
+        donationFrequency: document.getElementById('donationFrequency').value,
+        region: document.getElementById('region').value,
+        goals: document.getElementById('goals').value,
+        lastUpdated: new Date().toISOString()
+      };
+      
+      // Salvar no localStorage
+      localStorage.setItem('profileData', JSON.stringify(profileData));
+      localStorage.setItem('userName', profileData.fullName);
+      localStorage.setItem('userEmail', profileData.email);
+      
+      // Atualizar card do perfil
+      document.getElementById('profileName').textContent = profileData.fullName;
+      
+      // Mostrar mensagem de sucesso
+      const successMessage = document.getElementById('successMessage');
+      successMessage.classList.add('show');
+      
+      setTimeout(() => {
+        successMessage.classList.remove('show');
+      }, 3000);
+    });
+
+    // Função para resetar formulário
+    function resetForm() {
+      loadProfileData();
+      document.getElementById('successMessage').classList.remove('show');
+    }
+
+    // Carregar dados ao inicializar
+    loadProfileData();
+
+    // Animações ao scroll
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, observerOptions);
+
+    // Observar elementos para animação
+    document.querySelectorAll('.profile-card, .form-section').forEach(el => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(30px)';
+      el.style.transition = 'all 0.6s ease-out';
+      observer.observe(el);
+    });
+  </script>
+</body>
+</html>
+

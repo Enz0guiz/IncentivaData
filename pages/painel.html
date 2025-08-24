@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel - Incentiva Data</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    /* ===== RESET E BASE ===== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+      color: #1e293b;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    body.dark-theme {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      color: #f1f5f9;
+    }
+
+    /* ===== HEADER ===== */
+    .app-header {
+      background: linear-gradient(135deg, #6195C5 0%, #AFCBF3 100%);
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    body.dark-theme .app-header {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      border-bottom: 1px solid #334155;
+    }
+
+    .app-logo {
+      display: flex;
+      align-items: center;
+    }
+
+    .app-logo img {
+      height: 80px;
+      width: auto;
+      border-radius: 8px;
+    }
+
+    .navigation-menu {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .nav-link {
+      padding: 0.7rem 1.2rem;
+      border-radius: 8px;
+      text-decoration: none;
+      color: white;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .nav-link:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: translateY(-1px);
+    }
+
+    .nav-link--active {
+      background: #EECD86;
+      box-shadow: 0 4px 12px rgba(238, 205, 134, 0.3);
+    }
+
+    .theme-toggle {
+      background: transparent;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      color: white;
+      padding: 0.5rem;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 1.2rem;
+      transition: all 0.3s ease;
+      margin-left: 1rem;
+    }
+
+    .theme-toggle:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: scale(1.1);
+    }
+
+    /* ===== MAIN LAYOUT ===== */
+    .page-container {
+      padding: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .page-title {
+      font-size: 2.5rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+      color: #6195C5;
+      text-align: center;
+    }
+
+    body.dark-theme .page-title {
+      color: #EECD86;
+    }
+
+    .page-subtitle {
+      font-size: 1.1rem;
+      color: #64748b;
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    body.dark-theme .page-subtitle {
+      color: #cbd5e1;
+    }
+
+    /* ===== PAINEL EMPRESA/PESSOA ===== */
+    .donation-panel {
+      background: white;
+      border-radius: 20px;
+      padding: 3rem;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(97, 149, 197, 0.1);
+      margin-bottom: 2rem;
+    }
+
+    body.dark-theme .donation-panel {
+      background: #1e293b;
+      border-color: #334155;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+
+    .donation-title {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #6195C5;
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    body.dark-theme .donation-title {
+      color: #EECD86;
+    }
+
+    .donation-form {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      align-items: start;
+    }
+
+    .form-section {
+      background: #f8fafc;
+      border-radius: 16px;
+      padding: 2rem;
+      border: 1px solid rgba(97, 149, 197, 0.1);
+    }
+
+    body.dark-theme .form-section {
+      background: #0f172a;
+      border-color: #334155;
+    }
+
+    .form-section-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #6195C5;
+      margin-bottom: 1.5rem;
+    }
+
+    body.dark-theme .form-section-title {
+      color: #EECD86;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: #6195C5;
+    }
+
+    body.dark-theme .form-label {
+      color: #EECD86;
+    }
+
+    .form-input, .form-select {
+      width: 100%;
+      padding: 0.8rem;
+      border: 2px solid rgba(97, 149, 197, 0.2);
+      border-radius: 8px;
+      background: white;
+      color: #1e293b;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      font-family: inherit;
+    }
+
+    body.dark-theme .form-input,
+    body.dark-theme .form-select {
+      background: #1e293b;
+      border-color: #334155;
+      color: #f1f5f9;
+    }
+
+    .form-input:focus,
+    .form-select:focus {
+      outline: none;
+      border-color: #6195C5;
+      box-shadow: 0 0 0 3px rgba(97, 149, 197, 0.1);
+    }
+
+    .payment-methods {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .payment-method {
+      background: white;
+      border: 2px solid rgba(97, 149, 197, 0.2);
+      border-radius: 12px;
+      padding: 1rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    body.dark-theme .payment-method {
+      background: #1e293b;
+      border-color: #334155;
+    }
+
+    .payment-method:hover {
+      border-color: #6195C5;
+      transform: translateY(-2px);
+    }
+
+    .payment-method.selected {
+      border-color: #6195C5;
+      background: rgba(97, 149, 197, 0.1);
+    }
+
+    .payment-icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .payment-name {
+      font-weight: 600;
+      color: #6195C5;
+    }
+
+    body.dark-theme .payment-name {
+      color: #EECD86;
+    }
+
+    .calculation-result {
+      background: linear-gradient(135deg, #6195C5 0%, #AFCBF3 100%);
+      color: white;
+      border-radius: 16px;
+      padding: 2rem;
+      margin-top: 2rem;
+    }
+
+    .result-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
+    .result-breakdown {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+    }
+
+    .result-item {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 1rem;
+      text-align: center;
+    }
+
+    .result-value {
+      font-size: 1.5rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+    }
+
+    .result-label {
+      opacity: 0.9;
+      font-size: 0.9rem;
+    }
+
+    .donate-button {
+      width: 100%;
+      background: linear-gradient(135deg, #EECD86 0%, #F4A460 100%);
+      color: white;
+      padding: 1.2rem;
+      border: none;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 2rem;
+    }
+
+    .donate-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 35px rgba(238, 205, 134, 0.4);
+    }
+
+    /* ===== PAINEL OSC ===== */
+    .osc-panel {
+      display: none;
+    }
+
+    .osc-panel.active {
+      display: block;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin-bottom: 3rem;
+    }
+
+    .stat-card {
+      background: white;
+      border-radius: 20px;
+      padding: 2rem;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(97, 149, 197, 0.1);
+      text-align: center;
+    }
+
+    body.dark-theme .stat-card {
+      background: #1e293b;
+      border-color: #334155;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+
+    .stat-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    .stat-value {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: #6195C5;
+      margin-bottom: 0.5rem;
+    }
+
+    body.dark-theme .stat-value {
+      color: #EECD86;
+    }
+
+    .stat-label {
+      color: #64748b;
+      font-weight: 600;
+    }
+
+    body.dark-theme .stat-label {
+      color: #cbd5e1;
+    }
+
+    .chart-container {
+      background: white;
+      border-radius: 20px;
+      padding: 3rem;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(97, 149, 197, 0.1);
+      margin-bottom: 2rem;
+    }
+
+    body.dark-theme .chart-container {
+      background: #1e293b;
+      border-color: #334155;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+
+    .chart-title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #6195C5;
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+
+    body.dark-theme .chart-title {
+      color: #EECD86;
+    }
+
+    /* ===== FOOTER ===== */
+    .footer {
+      background: linear-gradient(135deg, #6195C5 0%, #AFCBF3 100%);
+      color: white;
+      text-align: center;
+      padding: 2rem;
+      margin-top: 2rem;
+    }
+
+    body.dark-theme .footer {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      border-top: 1px solid #334155;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+      .app-header {
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1rem;
+      }
+
+      .navigation-menu {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .page-container {
+        padding: 1rem;
+      }
+
+      .page-title {
+        font-size: 2rem;
+      }
+
+      .donation-form {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+
+      .result-breakdown {
+        grid-template-columns: 1fr;
+      }
+
+      .payment-methods {
+        grid-template-columns: 1fr;
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .donation-panel {
+        padding: 2rem 1.5rem;
+      }
+
+      .chart-container {
+        padding: 2rem 1.5rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .donation-panel {
+        padding: 1.5rem 1rem;
+      }
+
+      .chart-container {
+        padding: 1.5rem 1rem;
+      }
+
+      .form-section {
+        padding: 1.5rem;
+      }
+    }
+
+    /* ===== ANIMATIONS ===== */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .donation-panel, .stat-card, .chart-container {
+      animation: fadeInUp 0.6s ease-out;
+    }
+
+    .stat-card:nth-child(2) {
+      animation-delay: 0.1s;
+    }
+
+    .stat-card:nth-child(3) {
+      animation-delay: 0.2s;
+    }
+
+    .stat-card:nth-child(4) {
+      animation-delay: 0.3s;
+    }
+
+    .chart-container {
+      animation-delay: 0.4s;
+    }
+  </style>
+</head>
+<body>
+  <!-- HEADER -->
+  <header class="app-header">
+    <div class="app-logo">
+      <img src="C:\Users\User\Downloads\incentiva_data_site_atualizado\logo_adjusted.pngsted.png" alt="Logo Incentiva Data">
+    </div>
+    <nav class="navigation-menu">
+      <a href="dashboard.html" class="nav-link">Dashboard</a>
+      <a href="painel.html" class="nav-link nav-link--active">Painel</a>
+      <a href="solicitacoes.html" class="nav-link">Solicitações</a>
+      <a href="editar-perfil.html" class="nav-link">Perfil</a>
+      <a href="sobre.html" class="nav-link">Sobre</a>
+      <a href="index.html" class="nav-link">Sair</a>
+      <button id="toggleTheme" class="theme-toggle">🌙</button>
+    </nav>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main class="page-container">
+    <h1 class="page-title">Painel de Doações</h1>
+    <p class="page-subtitle" id="pageSubtitle">Faça sua doação de forma transparente e segura</p>
+
+    <!-- PAINEL EMPRESA/PESSOA -->
+    <section class="donation-panel" id="donationPanel">
+      <h2 class="donation-title">💰 Simulador de Doação</h2>
+      
+      <div class="donation-form">
+        <!-- SEÇÃO DE DOAÇÃO -->
+        <div class="form-section">
+          <h3 class="form-section-title">📋 Dados da Doação</h3>
+          
+          <div class="form-group">
+            <label class="form-label">OSC Beneficiária:</label>
+            <select class="form-select" id="oscSelect">
+              <option value="">Selecione uma OSC</option>
+              <option value="instituto-crianca-feliz">Instituto Criança Feliz</option>
+              <option value="ong-meio-ambiente">ONG Meio Ambiente Sustentável</option>
+              <option value="fundacao-educacao">Fundação Educação para Todos</option>
+              <option value="associacao-idosos">Associação Cuidar dos Idosos</option>
+              <option value="projeto-cultura">Projeto Cultura Viva</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Valor da Doação (R$):</label>
+            <input type="number" class="form-input" id="donationAmount" placeholder="Ex: 1000,00" min="1" step="0.01">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Meio de Pagamento:</label>
+            <div class="payment-methods">
+              <div class="payment-method" data-method="pix">
+                <div class="payment-icon">📱</div>
+                <div class="payment-name">PIX</div>
+              </div>
+              <div class="payment-method" data-method="transfer">
+                <div class="payment-icon">🏦</div>
+                <div class="payment-name">Transferência</div>
+              </div>
+              <div class="payment-method" data-method="credit">
+                <div class="payment-icon">💳</div>
+                <div class="payment-name">Crédito</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SEÇÃO DE INFORMAÇÕES DA OSC -->
+        <div class="form-section">
+          <h3 class="form-section-title">🏢 Informações da OSC</h3>
+          
+          <div id="oscInfo">
+            <p style="color: #64748b; text-align: center; padding: 2rem;">
+              Selecione uma OSC para ver as informações
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- RESULTADO DO CÁLCULO -->
+      <div class="calculation-result" id="calculationResult" style="display: none;">
+        <h3 class="result-title">📊 Resumo da Doação</h3>
+        <div class="result-breakdown">
+          <div class="result-item">
+            <div class="result-value" id="totalToPay">R$ 0,00</div>
+            <div class="result-label">Valor Total a Pagar</div>
+          </div>
+          <div class="result-item">
+            <div class="result-value" id="oscReceives">R$ 0,00</div>
+            <div class="result-label">OSC Recebe</div>
+          </div>
+          <div class="result-item">
+            <div class="result-value" id="platformFee">R$ 0,00</div>
+            <div class="result-label">Taxa da Plataforma (5%)</div>
+          </div>
+        </div>
+      </div>
+
+      <button class="donate-button" id="donateButton" style="display: none;">
+        🎁 Confirmar Doação
+      </button>
+    </section>
+
+    <!-- PAINEL OSC -->
+    <section class="osc-panel" id="oscPanel">
+      <h2 class="donation-title">📈 Acompanhamento de Doações</h2>
+      
+      <!-- ESTATÍSTICAS -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon">💰</div>
+          <div class="stat-value" id="totalReceived">R$ 45.230</div>
+          <div class="stat-label">Total Recebido</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">👥</div>
+          <div class="stat-value" id="totalDonors">127</div>
+          <div class="stat-label">Doadores</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">📅</div>
+          <div class="stat-value" id="thisMonth">R$ 8.450</div>
+          <div class="stat-label">Este Mês</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">📊</div>
+          <div class="stat-value" id="avgDonation">R$ 356</div>
+          <div class="stat-label">Média por Doação</div>
+        </div>
+      </div>
+
+      <!-- GRÁFICO DE DOAÇÕES -->
+      <div class="chart-container">
+        <h3 class="chart-title">📈 Doações Mensais</h3>
+        <canvas id="donationsChart" width="400" height="200"></canvas>
+      </div>
+
+      <!-- GRÁFICO DE DOADORES -->
+      <div class="chart-container">
+        <h3 class="chart-title">👥 Tipos de Doadores</h3>
+        <canvas id="donorsChart" width="400" height="200"></canvas>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <p>© <strong>Incentiva Data</strong> · Conectando empresas a causas sociais</p>
+  </footer>
+
+  <script>
+    // Sistema de tema claro/escuro
+    const toggleTheme = document.getElementById('toggleTheme');
+    const body = document.body;
+
+    // Carregar preferência salva
+    if (localStorage.getItem('theme') === 'dark') {
+      body.classList.add('dark-theme');
+      toggleTheme.textContent = '☀️';
+    }
+
+    toggleTheme.addEventListener('click', () => {
+      body.classList.toggle('dark-theme');
+      
+      if (body.classList.contains('dark-theme')) {
+        toggleTheme.textContent = '☀️';
+        localStorage.setItem('theme', 'dark');
+      } else {
+        toggleTheme.textContent = '🌙';
+        localStorage.setItem('theme', 'light');
+      }
+    });
+
+    // Verificar se usuário está logado
+    if (!localStorage.getItem('isLoggedIn')) {
+      window.location.href = 'index.html';
+    }
+
+    // Dados das OSCs
+    const oscData = {
+      'instituto-crianca-feliz': {
+        name: 'Instituto Criança Feliz',
+        cnpj: '12.345.678/0001-90',
+        area: 'Educação Infantil',
+        description: 'Organização dedicada ao desenvolvimento educacional de crianças em situação de vulnerabilidade social.',
+        beneficiaries: '450 crianças',
+        location: 'São Paulo, SP'
+      },
+      'ong-meio-ambiente': {
+        name: 'ONG Meio Ambiente Sustentável',
+        cnpj: '23.456.789/0001-01',
+        area: 'Meio Ambiente',
+        description: 'Trabalha na preservação ambiental e educação ecológica em comunidades urbanas e rurais.',
+        beneficiaries: '2.300 pessoas',
+        location: 'Rio de Janeiro, RJ'
+      },
+      'fundacao-educacao': {
+        name: 'Fundação Educação para Todos',
+        cnpj: '34.567.890/0001-12',
+        area: 'Educação',
+        description: 'Promove acesso à educação de qualidade para jovens e adultos em situação de exclusão social.',
+        beneficiaries: '1.200 estudantes',
+        location: 'Belo Horizonte, MG'
+      },
+      'associacao-idosos': {
+        name: 'Associação Cuidar dos Idosos',
+        cnpj: '45.678.901/0001-23',
+        area: 'Assistência Social',
+        description: 'Oferece cuidados e atividades para idosos em situação de abandono ou vulnerabilidade.',
+        beneficiaries: '180 idosos',
+        location: 'Porto Alegre, RS'
+      },
+      'projeto-cultura': {
+        name: 'Projeto Cultura Viva',
+        cnpj: '56.789.012/0001-34',
+        area: 'Cultura e Arte',
+        description: 'Desenvolve atividades culturais e artísticas para jovens em comunidades periféricas.',
+        beneficiaries: '650 jovens',
+        location: 'Salvador, BA'
+      }
+    };
+
+    // Determinar tipo de usuário e mostrar painel apropriado
+    const userType = localStorage.getItem('userType') || 'empresa';
+    
+    if (userType === 'osc') {
+      document.getElementById('donationPanel').style.display = 'none';
+      document.getElementById('oscPanel').classList.add('active');
+      document.getElementById('pageSubtitle').textContent = 'Acompanhe suas doações e impacto social';
+      
+      // Inicializar gráficos para OSC
+      initOSCCharts();
+    } else {
+      document.getElementById('donationPanel').style.display = 'block';
+      document.getElementById('oscPanel').classList.remove('active');
+    }
+
+    // Seleção de OSC
+    document.getElementById('oscSelect').addEventListener('change', function() {
+      const selectedOsc = this.value;
+      const oscInfoDiv = document.getElementById('oscInfo');
+      
+      if (selectedOsc && oscData[selectedOsc]) {
+        const osc = oscData[selectedOsc];
+        oscInfoDiv.innerHTML = `
+          <div style="text-align: left;">
+            <h4 style="color: #6195C5; margin-bottom: 1rem;">${osc.name}</h4>
+            <p><strong>CNPJ:</strong> ${osc.cnpj}</p>
+            <p><strong>Área:</strong> ${osc.area}</p>
+            <p><strong>Localização:</strong> ${osc.location}</p>
+            <p><strong>Beneficiários:</strong> ${osc.beneficiaries}</p>
+            <p style="margin-top: 1rem;"><strong>Descrição:</strong></p>
+            <p style="color: #64748b;">${osc.description}</p>
+          </div>
+        `;
+      } else {
+        oscInfoDiv.innerHTML = `
+          <p style="color: #64748b; text-align: center; padding: 2rem;">
+            Selecione uma OSC para ver as informações
+          </p>
+        `;
+      }
+      
+      calculateDonation();
+    });
+
+    // Seleção de método de pagamento
+    document.querySelectorAll('.payment-method').forEach(method => {
+      method.addEventListener('click', function() {
+        document.querySelectorAll('.payment-method').forEach(m => m.classList.remove('selected'));
+        this.classList.add('selected');
+        calculateDonation();
+      });
+    });
+
+    // Cálculo da doação
+    document.getElementById('donationAmount').addEventListener('input', calculateDonation);
+
+    function calculateDonation() {
+      const amount = parseFloat(document.getElementById('donationAmount').value) || 0;
+      const selectedOsc = document.getElementById('oscSelect').value;
+      const selectedPayment = document.querySelector('.payment-method.selected');
+      
+      if (amount > 0 && selectedOsc && selectedPayment) {
+        const platformFee = amount * 0.05;
+        const totalToPay = amount + platformFee;
+        
+        document.getElementById('totalToPay').textContent = `R$ ${totalToPay.toFixed(2).replace('.', ',')}`;
+        document.getElementById('oscReceives').textContent = `R$ ${amount.toFixed(2).replace('.', ',')}`;
+        document.getElementById('platformFee').textContent = `R$ ${platformFee.toFixed(2).replace('.', ',')}`;
+        
+        document.getElementById('calculationResult').style.display = 'block';
+        document.getElementById('donateButton').style.display = 'block';
+      } else {
+        document.getElementById('calculationResult').style.display = 'none';
+        document.getElementById('donateButton').style.display = 'none';
+      }
+    }
+
+    // Botão de doação
+    document.getElementById('donateButton').addEventListener('click', function() {
+      const amount = document.getElementById('donationAmount').value;
+      const osc = document.getElementById('oscSelect').value;
+      const payment = document.querySelector('.payment-method.selected').dataset.method;
+      
+      alert(`Doação de R$ ${amount} para ${oscData[osc].name} via ${payment.toUpperCase()} confirmada!\\n\\nEm breve você receberá as instruções de pagamento.`);
+      
+      // Limpar formulário
+      document.getElementById('donationAmount').value = '';
+      document.getElementById('oscSelect').value = '';
+      document.querySelectorAll('.payment-method').forEach(m => m.classList.remove('selected'));
+      document.getElementById('calculationResult').style.display = 'none';
+      document.getElementById('donateButton').style.display = 'none';
+      document.getElementById('oscInfo').innerHTML = `
+        <p style="color: #64748b; text-align: center; padding: 2rem;">
+          Selecione uma OSC para ver as informações
+        </p>
+      `;
+    });
+
+    // Inicializar gráficos para OSC
+    function initOSCCharts() {
+      // Gráfico de doações mensais
+      const donationsCtx = document.getElementById('donationsChart').getContext('2d');
+      new Chart(donationsCtx, {
+        type: 'line',
+        data: {
+          labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+          datasets: [{
+            label: 'Doações (R$)',
+            data: [3200, 4100, 3800, 5200, 4700, 6100, 5800, 7200, 6500, 8450, 7800, 9200],
+            borderColor: '#6195C5',
+            backgroundColor: 'rgba(97, 149, 197, 0.1)',
+            borderWidth: 3,
+            fill: true,
+            tension: 0.4
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              display: false
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              ticks: {
+                callback: function(value) {
+                  return 'R$ ' + value.toLocaleString();
+                }
+              }
+            }
+          }
+        }
+      });
+
+      // Gráfico de tipos de doadores
+      const donorsCtx = document.getElementById('donorsChart').getContext('2d');
+      new Chart(donorsCtx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Empresas', 'Pessoas Físicas', 'Outras OSCs'],
+          datasets: [{
+            data: [45, 40, 15],
+            backgroundColor: ['#6195C5', '#AFCBF3', '#EECD86'],
+            borderWidth: 0
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: {
+                padding: 20,
+                usePointStyle: true
+              }
+            }
+          }
+        }
+      });
+
+      // Animar números das estatísticas
+      animateStatNumbers();
+    }
+
+    // Animação dos números das estatísticas
+    function animateStatNumbers() {
+      const stats = [
+        { id: 'totalReceived', target: 45230, prefix: 'R$ ', suffix: '' },
+        { id: 'totalDonors', target: 127, prefix: '', suffix: '' },
+        { id: 'thisMonth', target: 8450, prefix: 'R$ ', suffix: '' },
+        { id: 'avgDonation', target: 356, prefix: 'R$ ', suffix: '' }
+      ];
+
+      stats.forEach(stat => {
+        const element = document.getElementById(stat.id);
+        let current = 0;
+        const increment = stat.target / 50;
+        
+        const timer = setInterval(() => {
+          current += increment;
+          
+          if (current >= stat.target) {
+            if (stat.prefix === 'R$ ') {
+              element.textContent = `${stat.prefix}${stat.target.toLocaleString()}${stat.suffix}`;
+            } else {
+              element.textContent = `${stat.prefix}${stat.target}${stat.suffix}`;
+            }
+            clearInterval(timer);
+          } else {
+            if (stat.prefix === 'R$ ') {
+              element.textContent = `${stat.prefix}${Math.floor(current).toLocaleString()}${stat.suffix}`;
+            } else {
+              element.textContent = `${stat.prefix}${Math.floor(current)}${stat.suffix}`;
+            }
+          }
+        }, 50);
+      });
+    }
+
+    // Animações ao scroll
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, observerOptions);
+
+    // Observar elementos para animação
+    document.querySelectorAll('.donation-panel, .stat-card, .chart-container').forEach(el => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(30px)';
+      el.style.transition = 'all 0.6s ease-out';
+      observer.observe(el);
+    });
+  </script>
+</body>
+</html>
+

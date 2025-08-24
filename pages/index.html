@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Incentiva Data - Conectando Empresas e OSCs</title>
+  <style>
+    /* ===== RESET E BASE ===== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+      color: #1e293b;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    body.dark-theme {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      color: #f1f5f9;
+    }
+
+    /* ===== HEADER ===== */
+    .app-header {
+      background: linear-gradient(135deg, #6195C5 0%, #AFCBF3 100%);
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    body.dark-theme .app-header {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      border-bottom: 1px solid #334155;
+    }
+
+    .app-logo {
+      display: flex;
+      align-items: center;
+    }
+
+    .app-logo img {
+      height: 80px;
+      width: auto;
+      border-radius: 8px;
+    }
+
+    .company-name {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .auth-link {
+      padding: 0.7rem 1.5rem;
+      border-radius: 8px;
+      text-decoration: none;
+      color: white;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      border: 2px solid transparent;
+    }
+
+    .auth-link--login {
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .auth-link--register {
+      background: #49a376;
+      box-shadow: 0 4px 12px rgba(73, 163, 118, 0.3);
+    }
+
+    .auth-link:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .theme-toggle {
+      background: transparent;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      color: white;
+      padding: 0.5rem;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 1.2rem;
+      transition: all 0.3s ease;
+      margin-left: 1rem;
+    }
+
+    .theme-toggle:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: scale(1.1);
+    }
+
+    /* ===== HERO SECTION ===== */
+    .hero-section {
+      background: linear-gradient(135deg, #1b72a0 0%, #0097b2 100%);
+      color: white;
+      padding: 6rem 2rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    body.dark-theme .hero-section {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    }
+
+    .hero-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="75" cy="75" r="1" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+      opacity: 0.3;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .hero-title {
+      font-size: 3.5rem;
+      font-weight: 800;
+      margin-bottom: 1.5rem;
+      line-height: 1.2;
+    }
+
+    .hero-subtitle {
+      font-size: 1.3rem;
+      opacity: 0.9;
+      margin-bottom: 3rem;
+      line-height: 1.6;
+    }
+
+    .cta-button {
+      background: linear-gradient(135deg, #49a376 0%, #cbac46 100%);
+      color: white;
+      padding: 1.2rem 3rem;
+      border: none;
+      border-radius: 12px;
+      font-size: 1.2rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+      box-shadow: 0 8px 25px rgba(73, 163, 118, 0.3);
+    }
+
+    .cta-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 35px rgba(73, 163, 118, 0.4);
+    }
+
+    /* ===== MAIN CONTENT ===== */
+    .main-content {
+      padding: 4rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* ===== NEWS SECTION ===== */
+    .news-section {
+      margin-bottom: 4rem;
+    }
+
+    .section-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #1b72a0;
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    body.dark-theme .section-title {
+      color: #49a376;
+    }
+
+    .news-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 2rem;
+    }
+
+    .news-card {
+      background: white;
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(27, 114, 160, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    body.dark-theme .news-card {
+      background: #1e293b;
+      border-color: #334155;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+
+    .news-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.15);
+    }
+
+    body.dark-theme .news-card:hover {
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4);
+    }
+
+    .news-card h3 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #1b72a0;
+      margin-bottom: 1rem;
+    }
+
+    body.dark-theme .news-card h3 {
+      color: #49a376;
+    }
+
+    .news-card p {
+      color: #64748b;
+      line-height: 1.6;
+    }
+
+    body.dark-theme .news-card p {
+      color: #cbd5e1;
+    }
+
+    /* ===== SOLUTIONS SECTION ===== */
+    .solutions-section {
+      margin-bottom: 4rem;
+    }
+
+    .solutions-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .solution-card {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+      border-radius: 16px;
+      padding: 2.5rem;
+      text-align: center;
+      border: 2px solid rgba(27, 114, 160, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    body.dark-theme .solution-card {
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      border-color: #334155;
+    }
+
+    .solution-card:hover {
+      transform: translateY(-8px);
+      border-color: #1b72a0;
+      box-shadow: 0 16px 48px rgba(27, 114, 160, 0.2);
+    }
+
+    body.dark-theme .solution-card:hover {
+      border-color: #49a376;
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4);
+    }
+
+    .solution-icon {
+      font-size: 3rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .solution-card h3 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #1b72a0;
+      margin-bottom: 1rem;
+    }
+
+    body.dark-theme .solution-card h3 {
+      color: #49a376;
+    }
+
+    .solution-card p {
+      color: #64748b;
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+
+    body.dark-theme .solution-card p {
+      color: #cbd5e1;
+    }
+
+    .solution-button {
+      background: linear-gradient(135deg, #1b72a0 0%, #0097b2 100%);
+      color: white;
+      padding: 0.8rem 1.5rem;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .solution-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(27, 114, 160, 0.3);
+    }
+
+    /* ===== ABOUT SECTION ===== */
+    .about-section {
+      background: white;
+      border-radius: 20px;
+      padding: 3rem;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(27, 114, 160, 0.1);
+    }
+
+    body.dark-theme .about-section {
+      background: #1e293b;
+      border-color: #334155;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+
+    .about-content {
+      text-align: center;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .about-content p {
+      font-size: 1.1rem;
+      color: #64748b;
+      line-height: 1.8;
+      margin-bottom: 2rem;
+    }
+
+    body.dark-theme .about-content p {
+      color: #cbd5e1;
+    }
+
+    .values-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .value-item {
+      text-align: center;
+    }
+
+    .value-item h4 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #1b72a0;
+      margin-bottom: 0.5rem;
+    }
+
+    body.dark-theme .value-item h4 {
+      color: #49a376;
+    }
+
+    .value-item p {
+      font-size: 0.9rem;
+      color: #64748b;
+      line-height: 1.5;
+    }
+
+    body.dark-theme .value-item p {
+      color: #cbd5e1;
+    }
+
+    /* ===== FOOTER ===== */
+    .footer {
+      background: linear-gradient(135deg, #1b72a0 0%, #0097b2 100%);
+      color: white;
+      text-align: center;
+      padding: 2rem;
+      margin-top: 2rem;
+    }
+
+    body.dark-theme .footer {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      border-top: 1px solid #334155;
+    }
+
+    /* ===== MODAL DE LOGIN ===== */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      backdrop-filter: blur(5px);
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: 20px;
+      padding: 3rem;
+      max-width: 400px;
+      margin: 10% auto;
+      position: relative;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    }
+
+    body.dark-theme .modal-content {
+      background: #1e293b;
+      border: 1px solid #334155;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: #64748b;
+    }
+
+    body.dark-theme .modal-close {
+      color: #cbd5e1;
+    }
+
+    .modal-title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #1b72a0;
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+
+    body.dark-theme .modal-title {
+      color: #49a376;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: #1b72a0;
+    }
+
+    body.dark-theme .form-label {
+      color: #49a376;
+    }
+
+    .form-input, .form-select {
+      width: 100%;
+      padding: 0.8rem;
+      border: 2px solid rgba(27, 114, 160, 0.2);
+      border-radius: 8px;
+      background: white;
+      color: #1e293b;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    body.dark-theme .form-input,
+    body.dark-theme .form-select {
+      background: #0f172a;
+      border-color: #334155;
+      color: #f1f5f9;
+    }
+
+    .form-input:focus,
+    .form-select:focus {
+      outline: none;
+      border-color: #1b72a0;
+      box-shadow: 0 0 0 3px rgba(27, 114, 160, 0.1);
+    }
+
+    .form-button {
+      width: 100%;
+      background: linear-gradient(135deg, #1b72a0 0%, #0097b2 100%);
+      color: white;
+      padding: 1rem;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .form-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(27, 114, 160, 0.3);
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+      .app-header {
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1rem;
+      }
+
+      .auth-menu {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .hero-title {
+        font-size: 2.5rem;
+      }
+
+      .hero-subtitle {
+        font-size: 1.1rem;
+      }
+
+      .main-content {
+        padding: 2rem 1rem;
+      }
+
+      .news-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+
+      .solutions-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+
+      .about-section {
+        padding: 2rem 1.5rem;
+      }
+
+      .values-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero-section {
+        padding: 4rem 1rem;
+      }
+
+      .hero-title {
+        font-size: 2rem;
+      }
+
+      .section-title {
+        font-size: 2rem;
+      }
+
+      .news-card, .solution-card {
+        padding: 1.5rem;
+      }
+
+      .modal-content {
+        margin: 5% auto;
+        padding: 2rem 1.5rem;
+      }
+    }
+
+    /* ===== ANIMATIONS ===== */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .news-card, .solution-card, .about-section {
+      animation: fadeInUp 0.6s ease-out;
+    }
+
+    .news-card:nth-child(2) {
+      animation-delay: 0.1s;
+    }
+
+    .news-card:nth-child(3) {
+      animation-delay: 0.2s;
+    }
+
+    .solution-card:nth-child(2) {
+      animation-delay: 0.1s;
+    }
+
+    .solution-card:nth-child(3) {
+      animation-delay: 0.2s;
+    }
+  </style>
+</head>
+<body>
+  <!-- HEADER -->
+  <header class="app-header">
+    <div class="app-logo">
+      <img src="logo_adjusted.png" alt="Logo Incentiva Data">
+    </div>
+    <nav class="auth-menu">
+      <a href="#" class="auth-link auth-link--login" onclick="openModal('loginModal')">Entrar</a>
+      <a href="#" class="auth-link auth-link--register" onclick="openModal('registerModal')">Cadastrar</a>
+      <button id="toggleTheme" class="theme-toggle">🌙</button>
+    </nav>
+  </header>
+
+  <!-- HERO SECTION -->
+  <section class="hero-section">
+    <div class="hero-content">
+      <h1 class="hero-title">Conectamos empresas a causas sociais</h1>
+      <p class="hero-subtitle">O match perfeito entre branding e impacto social. Transforme sua estratégia ESG em resultados reais.</p>
+      <a href="#" class="cta-button" onclick="openModal('registerModal')">Começar agora</a>
+    </div>
+  </section>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+    <!-- NOTÍCIAS E ATUALIZAÇÕES -->
+    <section class="news-section">
+      <h2 class="section-title">Notícias e Atualizações</h2>
+      <div class="news-grid">
+        <div class="news-card">
+          <h3>Nova Lei de Incentivos Fiscais</h3>
+          <p>Entenda as mudanças na legislação que podem beneficiar sua empresa e as OSCs parceiras. Novas oportunidades de dedução fiscal estão disponíveis.</p>
+        </div>
+        <div class="news-card">
+          <h3>Relatório de Impacto 2024</h3>
+          <p>Confira os resultados alcançados pelas parcerias realizadas através da nossa plataforma. Mais de R$ 50 milhões direcionados para causas sociais.</p>
+        </div>
+        <div class="news-card">
+          <h3>Novas Funcionalidades</h3>
+          <p>Dashboard aprimorado, simulador de split de pagamento e sistema de matching inteligente. Descubra como otimizar seus investimentos sociais.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SOLUÇÕES PARA CADA PERFIL -->
+    <section class="solutions-section">
+      <h2 class="section-title">Soluções para cada perfil</h2>
+      <div class="solutions-grid">
+        <div class="solution-card">
+          <div class="solution-icon">🏢</div>
+          <h3>Para Empresas</h3>
+          <p>Conecte-se com OSCs alinhadas aos seus valores e objetivos ESG. Monitore o impacto das suas doações em tempo real.</p>
+          <a href="#" class="solution-button" onclick="openModal('registerModal')">Cadastrar Empresa</a>
+        </div>
+        <div class="solution-card">
+          <div class="solution-icon">👤</div>
+          <h3>Para Pessoas Físicas</h3>
+          <p>Faça a diferença apoiando causas que importam para você. Acompanhe o impacto das suas contribuições.</p>
+          <a href="#" class="solution-button" onclick="openModal('registerModal')">Cadastrar Pessoa</a>
+        </div>
+        <div class="solution-card">
+          <div class="solution-icon">🤝</div>
+          <h3>Para OSCs</h3>
+          <p>Conecte-se com doadores alinhados à sua causa. Gerencie doações e comprove o impacto dos seus projetos.</p>
+          <a href="#" class="solution-button" onclick="openModal('registerModal')">Cadastrar OSC</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- SOBRE A INCENTIVA DATA -->
+    <section class="about-section">
+      <div class="about-content">
+        <h2 class="section-title">Sobre a Incentiva Data</h2>
+        <p>A Incentiva Data conecta empresas em busca de reputação ESG a OSCs com necessidades de financiamento, criando o match perfeito entre branding corporativo e impacto social sustentável.</p>
+        
+        <div class="values-grid">
+          <div class="value-item">
+            <h4>🎯 Missão</h4>
+            <p>Promover impacto social sustentável através da conexão inteligente entre empresas e organizações da sociedade civil.</p>
+          </div>
+          <div class="value-item">
+            <h4>🔮 Visão</h4>
+            <p>Ser a principal ponte entre empresas e causas sociais no Brasil, transformando investimentos em mudanças reais na sociedade.</p>
+          </div>
+          <div class="value-item">
+            <h4>💎 Valores</h4>
+            <p>Transparência, inovação, compromisso social e sustentabilidade em todas as nossas ações e parcerias.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <p>© <strong>Incentiva Data</strong> · Conectando empresas a causas sociais</p>
+    <p>Transformando investimentos em impacto social sustentável</p>
+  </footer>
+
+  <!-- MODAL DE LOGIN -->
+  <div id="loginModal" class="modal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeModal('loginModal')">&times;</button>
+      <h2 class="modal-title">Entrar na Plataforma</h2>
+      <form id="loginForm">
+        <div class="form-group">
+          <label class="form-label">Email:</label>
+          <input type="email" class="form-input" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Senha:</label>
+          <input type="password" class="form-input" required>
+        </div>
+        <button type="submit" class="form-button">Entrar</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL DE CADASTRO -->
+  <div id="registerModal" class="modal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeModal('registerModal')">&times;</button>
+      <h2 class="modal-title">Cadastrar na Plataforma</h2>
+      <form id="registerForm">
+        <div class="form-group">
+          <label class="form-label">Tipo de Usuário:</label>
+          <select class="form-select" id="userType" required>
+            <option value="">Selecione o tipo</option>
+            <option value="empresa">🏢 Empresa</option>
+            <option value="pessoa">👤 Pessoa Física</option>
+            <option value="osc">🤝 OSC</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Nome/Razão Social:</label>
+          <input type="text" class="form-input" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email:</label>
+          <input type="email" class="form-input" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Senha:</label>
+          <input type="password" class="form-input" required>
+        </div>
+        <button type="submit" class="form-button">Cadastrar</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // Sistema de tema claro/escuro
+    const toggleTheme = document.getElementById('toggleTheme');
+    const body = document.body;
+
+    // Carregar preferência salva
+    if (localStorage.getItem('theme') === 'dark') {
+      body.classList.add('dark-theme');
+      toggleTheme.textContent = '☀️';
+    }
+
+    toggleTheme.addEventListener('click', () => {
+      body.classList.toggle('dark-theme');
+      
+      if (body.classList.contains('dark-theme')) {
+        toggleTheme.textContent = '☀️';
+        localStorage.setItem('theme', 'dark');
+      } else {
+        toggleTheme.textContent = '🌙';
+        localStorage.setItem('theme', 'light');
+      }
+    });
+
+    // Sistema de modais
+    function openModal(modalId) {
+      document.getElementById(modalId).style.display = 'block';
+    }
+
+    function closeModal(modalId) {
+      document.getElementById(modalId).style.display = 'none';
+    }
+
+    // Fechar modal clicando fora
+    window.addEventListener('click', (event) => {
+      if (event.target.classList.contains('modal')) {
+        event.target.style.display = 'none';
+      }
+    });
+
+    // Manipulação dos formulários
+    document.getElementById('loginForm').addEventListener('submit', (event) => {
+      event.preventDefault();
+      
+      // Simular login
+      const email = event.target.querySelector('input[type="email"]').value;
+      
+      // Salvar dados do usuário
+      localStorage.setItem('userEmail', email);
+      localStorage.setItem('isLoggedIn', 'true');
+      
+      // Redirecionar baseado no tipo de usuário (simulado)
+      if (email.includes('osc') || email.includes('ong')) {
+        localStorage.setItem('userType', 'osc');
+        window.location.href = 'dashboard.html';
+      } else {
+        localStorage.setItem('userType', 'empresa');
+        window.location.href = 'dashboard.html';
+      }
+    });
+
+    document.getElementById('registerForm').addEventListener('submit', (event) => {
+      event.preventDefault();
+      
+      const userType = document.getElementById('userType').value;
+      const name = event.target.querySelector('input[type="text"]').value;
+      const email = event.target.querySelector('input[type="email"]').value;
+      
+      // Salvar dados do usuário
+      localStorage.setItem('userType', userType);
+      localStorage.setItem('userName', name);
+      localStorage.setItem('userEmail', email);
+      localStorage.setItem('isLoggedIn', 'true');
+      
+      // Redirecionar baseado no tipo de usuário
+      window.location.href = 'dashboard.html';
+    });
+
+    // Animações ao scroll
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, observerOptions);
+
+    // Observar elementos para animação
+    document.querySelectorAll('.news-card, .solution-card, .about-section').forEach(el => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(30px)';
+      el.style.transition = 'all 0.6s ease-out';
+      observer.observe(el);
+    });
+  </script>
+</body>
+</html>
+
