@@ -21,10 +21,10 @@ body.dark-theme {
 
 /* ===== VARIÁVEIS CSS ===== */
 :root {
-  --primary-blue: #1b72a0;
-  --secondary-blue: #0097b2;
-  --primary-green: #49a376;
-  --secondary-green: #cbac46;
+  --primary-blue: #0071c5;
+  --secondary-blue: #005f9e;
+  --primary-green: #34c759;
+  --secondary-green: #248a31;
   --text-dark: #1e293b;
   --text-light: #64748b;
   --bg-white: #ffffff;

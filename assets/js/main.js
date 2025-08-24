@@ -209,6 +209,15 @@ class FormUtils {
   }
 }
 
+// ===== Payment Split Simulation =====
+class PaymentSimulator {
+  static calculateSplit(donationAmount) {
+    const companyPays = donationAmount * 1.05;
+    const oscReceives = donationAmount;
+    return { companyPays, oscReceives };
+  }
+}
+
 // ===== INICIALIZAÇÃO =====
 document.addEventListener('DOMContentLoaded', function() {
   // Inicializar sistemas
