@@ -1,4 +1,3 @@
-
 // ===== CONFIGURAÇÃO GLOBAL =====
 const AppConfig = {
   theme: {
@@ -32,6 +31,9 @@ class ThemeManager {
     if (savedTheme === AppConfig.theme.dark) {
       this.body.classList.add('dark-theme');
       this.toggleButton.textContent = '☀️';
+    } else {
+      this.body.classList.remove('dark-theme');
+      this.toggleButton.textContent = '🌙';
     }
   }
 
@@ -41,7 +43,7 @@ class ThemeManager {
 
   toggleTheme() {
     this.body.classList.toggle('dark-theme');
-    
+
     if (this.body.classList.contains('dark-theme')) {
       this.toggleButton.textContent = '☀️';
       localStorage.setItem(AppConfig.theme.key, AppConfig.theme.dark);
@@ -89,14 +91,14 @@ class AuthManager {
   static handleLogin(email) {
     localStorage.setItem(AppConfig.user.userEmail, email);
     localStorage.setItem(AppConfig.user.isLoggedIn, 'true');
-    
+
     // Determinar tipo de usuário baseado no email
     if (email.includes('osc') || email.includes('ong')) {
       localStorage.setItem(AppConfig.user.userType, 'osc');
     } else {
       localStorage.setItem(AppConfig.user.userType, 'empresa');
     }
-    
+
     window.location.href = 'dashboard.html';
   }
 
@@ -105,7 +107,7 @@ class AuthManager {
     localStorage.setItem(AppConfig.user.userName, name);
     localStorage.setItem(AppConfig.user.userEmail, email);
     localStorage.setItem(AppConfig.user.isLoggedIn, 'true');
-    
+
     window.location.href = 'dashboard.html';
   }
 
@@ -138,7 +140,7 @@ class AnimationManager {
     const elementsToAnimate = document.querySelectorAll(
       '.news-card, .solution-card, .about-section, .stat-card, .content-card'
     );
-    
+
     elementsToAnimate.forEach(el => {
       el.style.opacity = '0';
       el.style.transform = 'translateY(30px)';
@@ -149,21 +151,21 @@ class AnimationManager {
 
   static animateNumbers() {
     const statNumbers = document.querySelectorAll('.stat-number');
-    
+
     statNumbers.forEach(stat => {
       const target = parseInt(stat.getAttribute('data-target'));
       const isMonetary = stat.textContent.includes('R$');
       let current = 0;
       const increment = target / 50;
-      
+
       const timer = setInterval(() => {
         current += increment;
-        
+
         if (current >= target) {
           current = target;
           clearInterval(timer);
         }
-        
+
         if (isMonetary) {
           stat.textContent = `R$ ${Math.floor(current)}M`;
         } else {
@@ -193,7 +195,7 @@ class FormUtils {
   static validateForm(form) {
     const inputs = form.querySelectorAll('input[required], select[required]');
     let isValid = true;
-    
+
     inputs.forEach(input => {
       if (!input.value.trim()) {
         input.style.borderColor = '#ef4444';
@@ -202,7 +204,7 @@ class FormUtils {
         input.style.borderColor = '';
       }
     });
-    
+
     return isValid;
   }
 }
@@ -213,7 +215,7 @@ document.addEventListener('DOMContentLoaded', function() {
   new ThemeManager();
   ModalManager.init();
   AnimationManager.setupScrollAnimations();
-  
+
   // Configurar animações de números após carregamento
   window.addEventListener('load', () => {
     setTimeout(() => {
