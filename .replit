@@ -2,3 +2,15 @@ modules = ["web"]
 
 [nix]
 channel = "stable-25_05"
+
+[workflows]
+runButton = "Servidor Local"
+
+[[workflows.workflow]]
+name = "Servidor Local"
+author = 46820520
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python -m http.server 5000 --directory pages"

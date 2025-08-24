@@ -4,26 +4,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Incentiva Data - Conectando Empresas e OSCs</title>
+  <link rel="stylesheet" href="../style/main.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <meta name="description" content="Plataforma que conecta empresas e OSCs para doações direcionadas com transparência e impacto social mensurável">
+  <meta name="keywords" content="ESG, doações, OSC, responsabilidade social, investimento social">
   <style>
-    /* ===== RESET E BASE ===== */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    /* Estilos específicos da página */
 
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-      color: #1e293b;
-      line-height: 1.6;
-      min-height: 100vh;
-    }
-
-    body.dark-theme {
-      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-      color: #f1f5f9;
-    }
+    /* Estilos específicos removidos - agora estão no main.css */
 
     /* ===== HEADER ===== */
     .app-header {
@@ -764,10 +753,9 @@
     </div>
   </div>
 
+  <script src="../script/main.js"></script>
   <script>
-    // Sistema de tema claro/escuro
-    const toggleTheme = document.getElementById('toggleTheme');
-    const body = document.body;
+    // Scripts específicos da página
 
     // Carregar preferência salva
     if (localStorage.getItem('theme') === 'dark') {
